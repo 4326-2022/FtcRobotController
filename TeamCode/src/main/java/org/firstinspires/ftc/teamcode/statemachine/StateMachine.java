@@ -52,16 +52,21 @@ public class StateMachine {
         State firstState = null;
         State topState = null;
         for (State state : stateChain) {
+
+            state.initialize();
+
             if (firstState == null) {
                 firstState = state;
                 topState = state;
+                continue;
             }
-
-            state.initialize();
 
             topState.setNextState(state);
             topState = state;
         }
+
+        State lastState = this.getLastState();
+        lastState.setNextState(topState);
     }
 
     public void start() {
