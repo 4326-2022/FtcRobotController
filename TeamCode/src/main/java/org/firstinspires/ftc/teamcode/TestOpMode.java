@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -71,6 +71,7 @@ public class TestOpMode extends OpMode
         telemetry.addData("Status", "Initialized");
 
         this.stateMachine = new StateMachine(this.hardwareMap, this.telemetry, this.runtime, this);
+
         WaitState state1 = new WaitState(5, this.stateMachine);
         WaitState state2 = new WaitState(10, this.stateMachine);
         state1.setName("State 1");
