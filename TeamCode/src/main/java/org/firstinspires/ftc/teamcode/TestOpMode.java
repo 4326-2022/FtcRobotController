@@ -59,7 +59,7 @@ import org.firstinspires.ftc.teamcode.statemachine.WaitState;
 public class TestOpMode extends OpMode
 {
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime elapsedTime = new ElapsedTime();
 
     private StateMachine stateMachine;
 
@@ -70,7 +70,10 @@ public class TestOpMode extends OpMode
     public void init() {
         telemetry.addData("Status", "Initialized");
 
-        this.stateMachine = new StateMachine(this.hardwareMap, this.telemetry, this.runtime, this);
+        // ADD AND MAKE MANAGERS
+        // INIT MANAGERS
+
+        this.stateMachine = new StateMachine(this.hardwareMap, this.telemetry, this.elapsedTime, this);
 
         State[] states = {
                 new WaitState(5, "State 1", this.stateMachine),
@@ -97,7 +100,8 @@ public class TestOpMode extends OpMode
      */
     @Override
     public void start() {
-        runtime.reset();
+        elapsedTime.reset();
+        // START MANAGER
         this.stateMachine.start();
     }
 
