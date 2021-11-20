@@ -4,10 +4,11 @@ public class WaitState extends State {
 
     private int waitTime;
 
-    public WaitState(int waitTime, StateMachine stateMachine) {
+    public WaitState(int waitTime, String name, StateMachine stateMachine) {
         super(stateMachine);
 
         this.waitTime = waitTime;
+        this.setName(name);
     }
 
     @Override
@@ -17,7 +18,7 @@ public class WaitState extends State {
 
     @Override
     void update() {
-
+        this.telemetry.addData("Message: ", "HEHEHEHE" + this.getName());
     }
 
     @Override

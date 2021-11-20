@@ -1,25 +1,36 @@
 package org.firstinspires.ftc.teamcode.statemachine;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public abstract class State {
 
-    protected StateMachine stateMachine;
-    private ElapsedTime elapsedTime;
+    protected final StateMachine stateMachine;
+
+    protected final Telemetry telemetry;
+    protected final HardwareMap hardwareMap;
+    protected final ElapsedTime elapsedTime;
+    protected final OpMode opMode;
 
     private double startTime;
     private double timeoutTime = 0;
-
     private State nextState = null;
-
     private boolean running = false;
 
     private String name = this.getClass().getSimpleName();
 
+
     // CONSTRUCTORS
     public State(StateMachine stateMachine) {
         this.stateMachine = stateMachine;
+
+        this.telemetry = this.stateMachine.telemetry;
+        this.hardwareMap = this.stateMachine.hardwareMap;
         this.elapsedTime = this.stateMachine.elapsedTime;
+        this.opMode = this.stateMachine.opMode;
     }
 
     // METHODS

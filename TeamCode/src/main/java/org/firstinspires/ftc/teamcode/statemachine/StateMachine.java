@@ -11,7 +11,7 @@ public class StateMachine {
     protected final HardwareMap hardwareMap;
     protected final Telemetry telemetry;
     protected final ElapsedTime elapsedTime;
-    private final OpMode opMode;
+    protected final OpMode opMode;
 
     private State headerState = null;
 

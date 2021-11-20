@@ -72,12 +72,10 @@ public class TestOpMode extends OpMode
 
         this.stateMachine = new StateMachine(this.hardwareMap, this.telemetry, this.runtime, this);
 
-        WaitState state1 = new WaitState(5, this.stateMachine);
-        WaitState state2 = new WaitState(10, this.stateMachine);
-        state1.setName("State 1");
-        state2.setName("State 2");
-
-        State[] states = {state1, state2};
+        State[] states = {
+                new WaitState(5, "State 1", this.stateMachine),
+                new WaitState(10, "State 2", this.stateMachine)
+        };
 
         this.stateMachine.feed(states);
 
