@@ -6,6 +6,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+/**
+ * This is the statemachine is in charge and responsible for managing states.
+ * @author Lawson
+ * @version 1.0
+ * @since November 20, 2021
+ */
 public class StateMachine {
 
     protected final HardwareMap hardwareMap;
@@ -15,6 +21,13 @@ public class StateMachine {
 
     private State headerState = null;
 
+    /**
+     * The default state machine constructor.
+     * @param hardwareMap The HardwareMap instance belonging to the OpMode.
+     * @param telemetry The Telemetry instance belonging to the OpMode.
+     * @param elapsedTime The ElapsedTime instance belonging to the OpMode.
+     * @param opMode The OpMode that is constructing the State Machine.
+     */
     public StateMachine(HardwareMap hardwareMap, Telemetry telemetry, ElapsedTime elapsedTime, OpMode opMode) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
@@ -22,6 +35,10 @@ public class StateMachine {
         this.opMode = opMode;
     }
 
+    /**
+     * Returns the last state in the current sequence.
+     * @return The last state.
+     */
     public State getLastState() {
         if (this.headerState == null) {
             return null;
@@ -36,6 +53,10 @@ public class StateMachine {
         return lastState;
     }
 
+    /**
+     * Adds a state to the end of the current sequence.
+     * @param newState The state to add.
+     */
     public void feed(State newState) {
         if (this.headerState == null) {
             this.headerState = newState;
@@ -48,6 +69,10 @@ public class StateMachine {
         lastState.setNextState(newState);
     }
 
+    /**
+     * Adds a list of states to the end of the current sequence.
+     * @param stateChain The list of states to add.
+     */
     public void feed(State[] stateChain) {
         State firstState = null;
         State topState = null;
@@ -69,12 +94,18 @@ public class StateMachine {
         lastState.setNextState(topState);
     }
 
+    /**
+     * Starts the first state in the sequence.
+     */
     public void start() {
         if (this.headerState != null) {
             this.headerState._start();
         }
     }
 
+    /**
+     * Updates the currently running state in the sequence.
+     */
     public void update() {
         if (this.headerState == null) {
             return;
@@ -90,6 +121,9 @@ public class StateMachine {
         this.headerState._update();
     }
 
+    /**
+     * Stops the currently running state in the sequence.
+     */
     public void stop() {
         if (this.headerState != null && this.headerState.isRunning()) {
             this.headerState._stop();
