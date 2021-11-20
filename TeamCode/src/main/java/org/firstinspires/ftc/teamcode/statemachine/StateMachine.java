@@ -66,7 +66,11 @@ public class StateMachine {
         newState.initialize();
 
         State lastState = this.getLastState();
-        lastState.setNextState(newState);
+        if (lastState != null) {
+            lastState.setNextState(newState);
+        } else {
+            this.headerState = newState;
+        }
     }
 
     /**
@@ -80,7 +84,7 @@ public class StateMachine {
 
             state.initialize();
 
-            if (firstState == null) {
+            if (firstState == null || topState == null) {
                 firstState = state;
                 topState = state;
                 continue;
@@ -91,7 +95,11 @@ public class StateMachine {
         }
 
         State lastState = this.getLastState();
-        lastState.setNextState(topState);
+        if (lastState != null) {
+            lastState.setNextState(firstState);
+        } else {
+            this.headerState = firstState;
+        }
     }
 
     /**
@@ -108,6 +116,7 @@ public class StateMachine {
      */
     public void update() {
         if (this.headerState == null) {
+            this.telemetry.addData("Running State", "None");
             return;
         }
 

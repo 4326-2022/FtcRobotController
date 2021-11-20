@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -54,8 +55,7 @@ import org.firstinspires.ftc.teamcode.statemachine.WaitState;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Test OpMode", group="Iterative Opmode")
-@Disabled
+@Autonomous(name="Test Auton")
 public class TestOpMode extends OpMode
 {
     // Declare OpMode members.
@@ -74,7 +74,9 @@ public class TestOpMode extends OpMode
 
         State[] states = {
                 new WaitState(5, "State 1", this.stateMachine),
-                new WaitState(10, "State 2", this.stateMachine)
+                new WaitState(10, "State 2", this.stateMachine),
+                new WaitState(5, "State 3", this.stateMachine),
+                new WaitState(5, "State 4", this.stateMachine)
         };
 
         this.stateMachine.feed(states);
