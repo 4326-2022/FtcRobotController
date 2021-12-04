@@ -27,7 +27,6 @@ public class DriveState extends State {
 
     private String Movement;
 
-    private State NextState;
 
     /**
      * This is the default State constructor.
@@ -43,11 +42,6 @@ public class DriveState extends State {
         leftBack = motor.get(2);
         rightBack = motor.get(3);
         Movement = direction;
-    }
-
-
-    public void setNextState(State state) {
-        NextState = state;
     }
 
     @Override
@@ -115,7 +109,6 @@ public class DriveState extends State {
                 rightFront.setPower(driveSpeed);
             }
 
-            this.setNextState(this);
         }
 
             else if (Movement.equals("backward")&&(newleftBackTarget < leftBack.getCurrentPosition() && newrightBackTarget < rightBack.getCurrentPosition() && newleftFrontTarget < leftFront.getCurrentPosition() && newrightFrontTarget < rightFront.getCurrentPosition() ) ){
@@ -125,19 +118,21 @@ public class DriveState extends State {
             rightFront.setPower(-driveSpeed);
 
 
-            this.setNextState(this);
         }   else {
             rightFront.setPower(0);
             leftFront.setPower(0);
             rightBack.setPower(0);
             leftBack.setPower(0);
-            this.setNextState(NextState);
+            this.startNextState();
         }
     }
 
     @Override
     void stop() {
-
+        rightFront.setPower(0);
+        leftFront.setPower(0);
+        rightBack.setPower(0);
+        leftBack.setPower(0);
     }
 
     @Override
