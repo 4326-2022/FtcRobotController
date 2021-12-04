@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.CommonVariables;
 
 /**
  * This is the statemachine is in charge and responsible for managing states.
@@ -23,16 +24,13 @@ public class StateMachine {
 
     /**
      * The default state machine constructor.
-     * @param hardwareMap The HardwareMap instance belonging to the OpMode.
-     * @param telemetry The Telemetry instance belonging to the OpMode.
-     * @param elapsedTime The ElapsedTime instance belonging to the OpMode.
-     * @param opMode The OpMode that is constructing the State Machine.
+     * @param commonVariables A common variables instance.
      */
-    public StateMachine(HardwareMap hardwareMap, Telemetry telemetry, ElapsedTime elapsedTime, OpMode opMode) {
-        this.hardwareMap = hardwareMap;
-        this.telemetry = telemetry;
-        this.elapsedTime = elapsedTime;
-        this.opMode = opMode;
+    public StateMachine(CommonVariables commonVariables) {
+        this.hardwareMap = commonVariables.getHardwareMap();
+        this.telemetry = commonVariables.getTelemetry();
+        this.elapsedTime = commonVariables.getElapsedTime();
+        this.opMode = commonVariables.getOpMode();
     }
 
     /**
@@ -137,5 +135,7 @@ public class StateMachine {
         if (this.headerState != null && this.headerState.isRunning()) {
             this.headerState._stop();
         }
+
+        this.headerState = null;
     }
 }

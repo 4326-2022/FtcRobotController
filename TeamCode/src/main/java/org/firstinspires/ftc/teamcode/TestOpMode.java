@@ -37,31 +37,23 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.components.ComponentHelper;
+import org.firstinspires.ftc.teamcode.components.TestComponent;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 import org.firstinspires.ftc.teamcode.statemachine.WaitState;
 
-/**
- * This file contains an example of an iterative (Non-Linear) "OpMode".
- * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
- * The names of OpModes appear on the menu of the FTC Driver Station.
- * When an selection is made from the menu, the corresponding  OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all iterative OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
 @Autonomous(name="Test Auton")
-public class TestOpMode extends OpMode
-{
+public class TestOpMode extends OpMode {
     // Declare OpMode members.
+    private CommonVariables commonVariables;
+
     private ElapsedTime elapsedTime = new ElapsedTime();
 
     private StateMachine stateMachine;
+
+    private TestComponent testComponent;
+    private TestComponent testComponent2;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -70,10 +62,19 @@ public class TestOpMode extends OpMode
     public void init() {
         telemetry.addData("Status", "Initialized");
 
-        // ADD AND MAKE MANAGERS
-        // INIT MANAGERS
+        this.commonVariables = new CommonVariables(
+                this,
+                this.telemetry,
+                this.hardwareMap,
+                this.elapsedTime
+        );
 
-        this.stateMachine = new StateMachine(this.hardwareMap, this.telemetry, this.elapsedTime, this);
+        // ADD AND MAKE MANAGERS
+        // INIT MANAGERS de
+        this.testComponent = ComponentHelper.getComponent(TestComponent.class, this, this.elapsedTime);
+        this.testComponent2 = ComponentHelper.getComponent(TestComponent.class, this, this.elapsedTime);
+
+        this.stateMachine = new StateMachine(this.commonVariables);
 
         State[] states = {
                 new WaitState(5, "State 1", this.stateMachine),
@@ -111,6 +112,8 @@ public class TestOpMode extends OpMode
     @Override
     public void loop() {
        this.stateMachine.update();
+       this.testComponent.sayHi();
+       this.telemetry.addData("Components Same", (this.testComponent == this.testComponent2));
     }
 
     /*
@@ -119,5 +122,6 @@ public class TestOpMode extends OpMode
     @Override
     public void stop() {
         this.stateMachine.stop();
+        this.stateMachine = null;
     }
 }
