@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.CommonVariables;
+import org.firstinspires.ftc.teamcode.commands.ManageTelemetry;
 import org.firstinspires.ftc.teamcode.commands.TestCommand;
 import org.firstinspires.ftc.teamcode.subsystems.TestSubsystem;
 
@@ -15,8 +16,6 @@ public class TestTeleOp extends CommandOpMode {
 
     private CommonVariables commonVariables;
     private ElapsedTime elapsedTime = new ElapsedTime();
-
-    private GamepadEx gamepad;
 
     private TestSubsystem testSubsystem;
 
@@ -29,12 +28,10 @@ public class TestTeleOp extends CommandOpMode {
                 this.elapsedTime
         );
 
-        this.gamepad = new GamepadEx(this.gamepad1);
         this.testSubsystem = new TestSubsystem(this.telemetry);
 
         register(this.testSubsystem);
-
-        this.testSubsystem.setDefaultCommand(new TestCommand(this.testSubsystem));
+        schedule(new ManageTelemetry(this.telemetry));
 
         telemetry.addData("Status", "Initialized");
     }
