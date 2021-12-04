@@ -101,14 +101,18 @@ public class CWTurnByPID extends State {
     public void update() {
 
         rotate((int)target, driveSpeed);
-        setNextState(NextState);
+        this.startNextState();
 
 
     }
 
     @Override
     void stop() {
-
+        rightFront.setPower(0);
+        leftFront.setPower(0);
+        rightBack.setPower(0);
+        leftBack.setPower(0);
+        this.startNextState();
     }
 
     @Override
