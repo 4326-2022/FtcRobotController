@@ -122,6 +122,8 @@ public abstract class State {
 
             lastState = stateToAdd;
         }
+
+        lastState.setNextState(oldNextState);
     }
 
     /**
