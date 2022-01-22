@@ -111,6 +111,19 @@ public abstract class State {
         this.nextState = newState;
     }
 
+    public void insert(State[] newStates) {
+        State oldNextState = this.nextState;
+        State lastState = this;
+
+        for (State stateToAdd : newStates) {
+            lastState.setNextState(stateToAdd);
+
+            stateToAdd.initialize();
+
+            lastState = stateToAdd;
+        }
+    }
+
     /**
      * Attempts to have the thread wait for the specified amount of time.
      * @param milliseconds The time that the thread will sleep for.

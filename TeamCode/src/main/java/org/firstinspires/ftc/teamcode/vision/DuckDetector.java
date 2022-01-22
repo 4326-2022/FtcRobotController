@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.vision;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.CommonVariables;
-import org.firstinspires.ftc.teamcode.SkystoneDeterminationExample;
 import org.firstinspires.ftc.teamcode.components.Component;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
