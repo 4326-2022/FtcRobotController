@@ -38,7 +38,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
-import org.firstinspires.ftc.teamcode.components.TestComponent;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 import org.firstinspires.ftc.teamcode.statemachine.WaitState;
@@ -51,9 +50,6 @@ public class TestOpMode extends OpMode {
     private ElapsedTime elapsedTime = new ElapsedTime();
 
     private StateMachine stateMachine;
-
-    private TestComponent testComponent;
-    private TestComponent testComponent2;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -68,11 +64,6 @@ public class TestOpMode extends OpMode {
                 this.hardwareMap,
                 this.elapsedTime
         );
-
-        // ADD AND MAKE MANAGERS
-        // INIT MANAGERS de
-        this.testComponent = ComponentHelper.getComponent(TestComponent.class, this, this.elapsedTime);
-        this.testComponent2 = ComponentHelper.getComponent(TestComponent.class, this, this.elapsedTime);
 
         this.stateMachine = new StateMachine(this.commonVariables);
 
@@ -112,8 +103,6 @@ public class TestOpMode extends OpMode {
     @Override
     public void loop() {
        this.stateMachine.update();
-       this.testComponent.sayHi();
-       this.telemetry.addData("Components Same", (this.testComponent == this.testComponent2));
     }
 
     /*
