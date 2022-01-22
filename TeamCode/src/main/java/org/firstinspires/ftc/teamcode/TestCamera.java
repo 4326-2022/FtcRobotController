@@ -166,6 +166,7 @@ public class TestCamera extends LinearOpMode
     class SamplePipeline extends OpenCvPipeline
     {
         boolean viewportPaused;
+        int startPos;
 
         /*
          * NOTE: if you wish to use additional Mat objects in your processing pipeline, it is
@@ -200,14 +201,40 @@ public class TestCamera extends LinearOpMode
                             input.rows()*(3f/4f)),
                     new Scalar(0, 255, 0), 4);
 
+            /*
+            img processing here
+
+            I'm thinking we draw 3 rectangles (one around each of the barcodes)
+            And just see which one has the duck on it
+
+            if (Duck is on first barcode)
+                startpos = 1
+               elif (duck is on second barcode)
+                startpos = 2
+             else
+                startpos = 3
+             and we can call a getStartPosition function from our opmode to place the duck on the
+             appropriate level
+
+            */
+
+
+
+
+
             /**
              * NOTE: to see how to get data from your pipeline to your OpMode as well as how
-             * to change which stage of the pipeline is rendered to the viewport when it is
+             * to cange which stage of the pipeline is rendered to the viewport when it is
              * tapped, please see {@link PipelineStageSwitchingExample}
              */
 
             return input;
         }
+
+        public int getStartPos() {
+            return startPos;
+        }
+
 
         @Override
         public void onViewportTapped()
