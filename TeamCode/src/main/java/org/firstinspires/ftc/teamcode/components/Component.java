@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.CommonVariables;
 
 public abstract class Component {
 
@@ -13,15 +14,15 @@ public abstract class Component {
     protected final Telemetry telemetry;
     protected final ElapsedTime elapsedTime;
 
-    public Component(OpMode opMode, HardwareMap hardwareMap, Telemetry telemetry, ElapsedTime elapsedTime) {
-        this.opMode = opMode;
-        this.hardwareMap = hardwareMap;
-        this.telemetry = telemetry;
-        this.elapsedTime = elapsedTime;
+    public Component(CommonVariables commonVariables) {
+        this.opMode = commonVariables.getOpMode();
+        this.hardwareMap = commonVariables.getHardwareMap();
+        this.telemetry = commonVariables.getTelemetry();
+        this.elapsedTime = commonVariables.getElapsedTime();
     }
 
-    abstract void initialize();
-    abstract void stop();
-    abstract void update();
+    public abstract void initialize();
+    public abstract void stop();
+    public abstract void update();
 
 }

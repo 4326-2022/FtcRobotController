@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.CommonVariables;
  */
 public class StateMachine {
 
+    protected final CommonVariables commonVariables;
     protected final HardwareMap hardwareMap;
     protected final Telemetry telemetry;
     protected final ElapsedTime elapsedTime;
@@ -27,6 +28,7 @@ public class StateMachine {
      * @param commonVariables A common variables instance.
      */
     public StateMachine(CommonVariables commonVariables) {
+        this.commonVariables = commonVariables;
         this.hardwareMap = commonVariables.getHardwareMap();
         this.telemetry = commonVariables.getTelemetry();
         this.elapsedTime = commonVariables.getElapsedTime();

@@ -37,10 +37,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.components.Component;
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
+import org.firstinspires.ftc.teamcode.statemachine.DetermineDuckState;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 import org.firstinspires.ftc.teamcode.statemachine.WaitState;
+import org.firstinspires.ftc.teamcode.vision.DuckDetector;
 
 @Autonomous(name="Test Auton")
 public class TestOpMode extends OpMode {
@@ -50,6 +53,7 @@ public class TestOpMode extends OpMode {
     private ElapsedTime elapsedTime = new ElapsedTime();
 
     private StateMachine stateMachine;
+    private Component[] opModeComponents;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -68,13 +72,19 @@ public class TestOpMode extends OpMode {
         this.stateMachine = new StateMachine(this.commonVariables);
 
         State[] states = {
-                new WaitState(5, "State 1", this.stateMachine),
-                new WaitState(10, "State 2", this.stateMachine),
-                new WaitState(5, "State 3", this.stateMachine),
-                new WaitState(5, "State 4", this.stateMachine)
+                new DetermineDuckState(stateMachine)
         };
 
         this.stateMachine.feed(states);
+
+        Component[] components = {
+                ComponentHelper.getComponent(DuckDetector.class, commonVariables)
+        };
+        this.opModeComponents = components;
+
+        for (Component component : components) {
+            component.initialize();
+        }
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -103,6 +113,7 @@ public class TestOpMode extends OpMode {
     @Override
     public void loop() {
        this.stateMachine.update();
+       this.telemetry.addData("Position:", ComponentHelper.getComponent(DuckDetector.class, commonVariables).getPosition());
     }
 
     /*
@@ -112,5 +123,9 @@ public class TestOpMode extends OpMode {
     public void stop() {
         this.stateMachine.stop();
         this.stateMachine = null;
+
+        for (Component component : this.opModeComponents) {
+            component.stop();
+        }
     }
 }

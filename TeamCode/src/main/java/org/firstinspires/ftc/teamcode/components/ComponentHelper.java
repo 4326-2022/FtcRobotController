@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.CommonVariables;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -17,19 +18,19 @@ public class ComponentHelper {
 
     private static HashMap<Class<? extends Component>, Object> instances = new HashMap<Class<? extends Component>, Object>();
 
-    public static <T extends Component> T getComponent(Class<T> clazz, OpMode opMode, ElapsedTime elapsedTime) {
+    public static <T extends Component> T getComponent(Class<T> clazz, CommonVariables commonVariables) {
         Object instance = instances.get(clazz);
         if (instance != null) {
             T castedInstance = (T) instance;
 
-            if (castedInstance.opMode == opMode) {
+            if (castedInstance.opMode == commonVariables.getOpMode()) {
                 return (T) instances.get(clazz);
             }
         }
 
         try {
-            Constructor<T> ctor = clazz.getConstructor(OpMode.class, HardwareMap.class, Telemetry.class, ElapsedTime.class);
-            T createdInstance = ctor.newInstance(opMode, opMode.hardwareMap, opMode.telemetry, elapsedTime);
+            Constructor<T> ctor = clazz.getConstructor(CommonVariables.class);
+            T createdInstance = ctor.newInstance(commonVariables);
 
             instances.put(clazz, createdInstance);
 

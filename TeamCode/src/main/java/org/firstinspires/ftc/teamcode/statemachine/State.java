@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.CommonVariables;
 
 /**
  * This is the state, the logical foundational unit of the State Machine architecture.
@@ -17,6 +18,7 @@ public abstract class State {
 
     protected final StateMachine stateMachine;
 
+    protected final CommonVariables commonVariables;
     protected final Telemetry telemetry;
     protected final HardwareMap hardwareMap;
     protected final ElapsedTime elapsedTime;
@@ -39,6 +41,7 @@ public abstract class State {
     public State(StateMachine stateMachine) {
         this.stateMachine = stateMachine;
 
+        this.commonVariables = this.stateMachine.commonVariables;
         this.telemetry = this.stateMachine.telemetry;
         this.hardwareMap = this.stateMachine.hardwareMap;
         this.elapsedTime = this.stateMachine.elapsedTime;
