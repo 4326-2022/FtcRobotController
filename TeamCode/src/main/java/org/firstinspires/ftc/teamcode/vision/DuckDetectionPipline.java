@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class DuckDetectionPipline extends OpenCvPipeline {
     /*
-     * An enum to define the skystone position
+     * An enum to define the duck position
      */
     public enum DuckPosition {
         LEFT,
