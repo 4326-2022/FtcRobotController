@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.statemachine;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.TickService;
 
@@ -10,6 +11,7 @@ public class ExtendRail extends State {
     private int inches;
     private int targetTicks;
     private DcMotor railMotor;
+    private Servo armServo;
 
     /**
      * This is the default State constructor.
@@ -34,20 +36,26 @@ public class ExtendRail extends State {
 
     @Override
     void update() {
-        while (this.railMotor.isBusy()) {
-            return;
+        if (this.railMotor.getCurrentPosition() < this.railMotor.getTargetPosition()) {
+            this.railMotor.setPower(this.power);
         }
 
-        this.startNextState();
+        if (this.railMotor.getCurrentPosition() >= this.railMotor.getTargetPosition()) {
+            this.telemetry.addData("Here?", true);
+            this.armServo.setPosition(0);
+            this.startTimeOut(1);
+        }
     }
 
     @Override
     void stop() {
+        this.armServo.setPosition(1);
         this.railMotor.setPower(0);
     }
 
     @Override
     void initialize() {
         this.railMotor = this.hardwareMap.get(DcMotor.class, "xr");
+        this.armServo = this.hardwareMap.get(Servo.class, "cs");
     }
 }

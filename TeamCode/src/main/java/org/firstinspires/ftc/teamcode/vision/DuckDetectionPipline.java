@@ -27,11 +27,11 @@ public class DuckDetectionPipline extends OpenCvPipeline {
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(109,98);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(181,98);
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(253,98);
-    static final int REGION_WIDTH = 20;
-    static final int REGION_HEIGHT = 20;
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,78);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(161,78);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(280,78);
+    static final int REGION_WIDTH = 40;
+    static final int REGION_HEIGHT = 60;
 
     /*
      * Points which actually define the sample region rectangles, derived from above values
@@ -170,7 +170,7 @@ public class DuckDetectionPipline extends OpenCvPipeline {
          * Simply a visual aid. Serves no functional purpose.
          */
         Imgproc.rectangle(
-                input, // Buffer to draw on
+                Cb, // Buffer to draw on
                 region1_pointA, // First point which defines the rectangle
                 region1_pointB, // Second point which defines the rectangle
                 BLUE, // The color the rectangle is drawn in
@@ -181,7 +181,7 @@ public class DuckDetectionPipline extends OpenCvPipeline {
          * Simply a visual aid. Serves no functional purpose.
          */
         Imgproc.rectangle(
-                input, // Buffer to draw on
+                Cb, // Buffer to draw on
                 region2_pointA, // First point which defines the rectangle
                 region2_pointB, // Second point which defines the rectangle
                 BLUE, // The color the rectangle is drawn in
@@ -190,9 +190,10 @@ public class DuckDetectionPipline extends OpenCvPipeline {
         /*
          * Draw a rectangle showing sample region 3 on the screen.
          * Simply a visual aid. Serves no functional purpose.
+         * Simply a visual aid. Serves no functional purpose.
          */
         Imgproc.rectangle(
-                input, // Buffer to draw on
+                Cb, // Buffer to draw on
                 region3_pointA, // First point which defines the rectangle
                 region3_pointB, // Second point which defines the rectangle
                 BLUE, // The color the rectangle is drawn in
@@ -218,7 +219,7 @@ public class DuckDetectionPipline extends OpenCvPipeline {
              * Simply a visual aid. Serves no functional purpose.
              */
             Imgproc.rectangle(
-                    input, // Buffer to draw on
+                    Cb, // Buffer to draw on
                     region1_pointA, // First point which defines the rectangle
                     region1_pointB, // Second point which defines the rectangle
                     GREEN, // The color the rectangle is drawn in
@@ -233,7 +234,7 @@ public class DuckDetectionPipline extends OpenCvPipeline {
              * Simply a visual aid. Serves no functional purpose.
              */
             Imgproc.rectangle(
-                    input, // Buffer to draw on
+                    Cb, // Buffer to draw on
                     region2_pointA, // First point which defines the rectangle
                     region2_pointB, // Second point which defines the rectangle
                     GREEN, // The color the rectangle is drawn in
@@ -248,7 +249,7 @@ public class DuckDetectionPipline extends OpenCvPipeline {
              * Simply a visual aid. Serves no functional purpose.
              */
             Imgproc.rectangle(
-                    input, // Buffer to draw on
+                    Cb, // Buffer to draw on
                     region3_pointA, // First point which defines the rectangle
                     region3_pointB, // Second point which defines the rectangle
                     GREEN, // The color the rectangle is drawn in
@@ -260,7 +261,7 @@ public class DuckDetectionPipline extends OpenCvPipeline {
          * simply rendering the raw camera feed, because we called functions
          * to add some annotations to this buffer earlier up.
          */
-        return input;
+        return Cb;
     }
 
     /*
