@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class ClaspState extends State {
 
     Servo arm;
-    State NextState;
     ElapsedTime mRuntime = new ElapsedTime();
     Double time;
     double Power;
