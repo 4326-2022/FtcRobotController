@@ -28,14 +28,15 @@ public class ExtendPulleyState extends State {
     ElapsedTime mRuntime = new ElapsedTime();
 
 
-    public ExtendPulleyState(StateMachine statemachine, double time, double power, ArrayList<DcMotor> motor, Servo right, Servo left) {
+    public ExtendPulleyState(StateMachine statemachine, double time, double power, ArrayList<DcMotor> motor, Servo arm, Servo clamp, String direction) {
         super(statemachine);
         Time = time;
         pulley = motor.get(4);
-        leftHand = left;
-        rightHand = right;
+        leftHand = arm;
+        rightHand = clamp;
         Power = power;
         mRuntime.reset();
+        Movement = direction;
 
     }
 
@@ -59,7 +60,11 @@ public class ExtendPulleyState extends State {
 
 
         while (mRuntime.seconds() < Time) {
-            pulley.setPower(Power);
+            if (Movement == "extend") {
+                pulley.setPower(Power);
+            } else {
+                pulley.setPower(-Power);
+            }
 
         }
 
