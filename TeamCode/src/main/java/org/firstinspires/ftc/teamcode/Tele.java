@@ -97,7 +97,7 @@ public class Tele extends OpMode {
         this.motors = new DcMotor[]{frontLeft, frontRight, backLeft, backRight};
         for (int i = 0; i < this.motors.length; i++) {
             DcMotor motor = this.motors[i];
-            DcMotor.Direction direction = i % 2 == 0 ? DcMotor.Direction.FORWARD : DcMotor.Direction.REVERSE;
+            DcMotor.Direction direction = i % 2 == 0 ? DcMotor.Direction.REVERSE : DcMotor.Direction.FORWARD;
 
             motor.setDirection(direction);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -140,7 +140,7 @@ public class Tele extends OpMode {
     public void loop() {
         // DRIVING
         double drive = gamepad1.left_stick_y;
-        double turn = gamepad1.left_stick_x;
+        double turn = gamepad1.right_stick_x;
 
         double[] powers = {
                 drive - turn,
@@ -155,14 +155,14 @@ public class Tele extends OpMode {
         }
 
         // XRAIL
-        float upSpeed = gamepad1.right_trigger;
-        float downSpeed = gamepad1.left_trigger;
+        float upSpeed = gamepad2.right_trigger;
+        float downSpeed = gamepad2.left_trigger;
         float totalSpeed = upSpeed - downSpeed;
 
         this.xRailMotor.setPower(totalSpeed);
 
         // CAROUSEL MOTOR
-        double carMotorPower = this.gamepad1.x ? this.MAX_CAR_POWER : 0;
+        double carMotorPower = this.gamepad2.x ? this.MAX_CAR_POWER : 0;
         this.carMotor.setPower(carMotorPower);
 
 
@@ -177,11 +177,11 @@ public class Tele extends OpMode {
         }
 
         if (this.gamepad1.a) {
-            this.clampTarget += .001;
-        }
-
-        if (this.gamepad1.b) {
-            this.clampTarget -= .001;
+            this.clampTarget = .5;
+        } else if (this.gamepad1.b) {
+            this.clampTarget = -.5;
+        } else {
+            this.clampTarget = 0;
         }
 
         this.clampServo.setPosition(this.clampTarget);
