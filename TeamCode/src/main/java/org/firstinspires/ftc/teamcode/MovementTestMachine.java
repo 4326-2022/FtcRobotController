@@ -36,18 +36,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.components.Component;
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
 import org.firstinspires.ftc.teamcode.statemachine.CCWTurnByPID;
-import org.firstinspires.ftc.teamcode.statemachine.CWTurnByPID;
-import org.firstinspires.ftc.teamcode.statemachine.ClaspState;
 import org.firstinspires.ftc.teamcode.statemachine.DetermineDuckState;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
-import org.firstinspires.ftc.teamcode.statemachine.ExtendPulleyState;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 import org.firstinspires.ftc.teamcode.statemachine.TurnCarouselState;
@@ -56,15 +52,10 @@ import org.firstinspires.ftc.teamcode.vision.DuckDetector;
 
 import java.util.ArrayList;
 
-@Autonomous(name="Test Auton #2")
-public class TestMachine extends OpMode {
+@Autonomous(name="Movement Test")
+public class MovementTestMachine extends OpMode {
     // Declare OpMode members.
     private CommonVariables commonVariables;
-
-    private ElapsedTime elapsedTime = new ElapsedTime();
-
-    private StateMachine stateMachine;
-    private Component[] opModeComponents;
 
     DcMotor leftFront;
     DcMotor rightFront;
@@ -75,20 +66,24 @@ public class TestMachine extends OpMode {
 
     BNO055IMU imu;
 
-    Servo arm;
-    Servo clamp;
+    private ElapsedTime elapsedTime = new ElapsedTime();
+
+    private StateMachine stateMachine;
+    private Component[] opModeComponents;
 
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        rightFront = hardwareMap.dcMotor.get("right_front");
-        leftFront = hardwareMap.dcMotor.get("left_front");
-        rightBack = hardwareMap.dcMotor.get("right_back");
-        leftBack = hardwareMap.dcMotor.get("left_back");
-        xrail = hardwareMap.dcMotor.get("x-rail");
-        spinny = hardwareMap.dcMotor.get("carousel_mech");
+        rightFront = hardwareMap.dcMotor.get("fr");
+        leftFront = hardwareMap.dcMotor.get("fl");
+        rightBack = hardwareMap.dcMotor.get("br");
+        leftBack = hardwareMap.dcMotor.get("bl");
+        xrail = hardwareMap.dcMotor.get("xr");
+        spinny = hardwareMap.dcMotor.get("cm");
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
 
 
         ArrayList<DcMotor> motors = new ArrayList<DcMotor>();
@@ -99,9 +94,8 @@ public class TestMachine extends OpMode {
         motors.add(xrail);
         motors.add(spinny);
 
-
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE); //leftFront
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE); //leftFront
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized");
 
@@ -115,32 +109,8 @@ public class TestMachine extends OpMode {
         this.stateMachine = new StateMachine(this.commonVariables);
 
         State[] states = {
-                // see what position the duck is in
-                new DetermineDuckState(stateMachine),
-
-                // move in front of alliance shipping hub
-                new DriveState(stateMachine, motors, 5, "forward", 10),
-                new CCWTurnByPID(stateMachine, 90, 5, motors, imu),
-                new DriveState(stateMachine, motors, 5, "forward", 10),
-                new CWTurnByPID(stateMachine, 90, 5, motors, imu),
-                new DriveState(stateMachine, motors, 5, "forward", 10),
-
-                // put the duck down
-
-                // move to carousel
-                new DriveState(stateMachine, motors, 5, "backward", 20),
-                new CCWTurnByPID(stateMachine, 90, 5, motors, imu),
-                new DriveState(stateMachine, motors, 5, "forward", 20),
-
-                //deliver duck
-                new TurnCarouselState(stateMachine, 5, motors, 5),
-
-                //park
-                new CCWTurnByPID(stateMachine, 90, 5, motors, imu),
-                new DriveState(stateMachine ,motors, 5, "forward", 10),
-
-                new WaitState(5, "End State 1", stateMachine),
-                new WaitState(5, "End State 2", stateMachine),
+                new DriveState(stateMachine, motors, 0.6, "forward", 5),
+                new CCWTurnByPID(stateMachine, 90, .5, motors, imu)
         };
 
         this.stateMachine.feed(states);
