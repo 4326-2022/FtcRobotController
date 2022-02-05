@@ -25,6 +25,15 @@ public class ExtendRail extends State {
         this.targetTicks = TickService.inchesToTicks(this.inches);
     }
 
+    void changeTarget(int newInches, boolean running) {
+        this.inches = newInches;
+        this.targetTicks = TickService.inchesToTicks(this.inches);
+
+        if (running) {
+            this.railMotor.setTargetPosition(this.targetTicks);
+        }
+    }
+
     @Override
     void start() {
         this.railMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -41,7 +50,6 @@ public class ExtendRail extends State {
         }
 
         if (this.railMotor.getCurrentPosition() >= this.railMotor.getTargetPosition()) {
-            this.telemetry.addData("Here?", true);
             this.armServo.setPosition(0);
             this.startTimeOut(1);
             this.stop();
