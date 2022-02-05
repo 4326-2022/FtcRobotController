@@ -19,11 +19,10 @@ public class TurnCarouselState extends State{
 
 
 
-    public TurnCarouselState(StateMachine statemachine, double time, ArrayList<DcMotor> motors, double power, String direction){
+    public TurnCarouselState(StateMachine statemachine, double time, ArrayList<DcMotor> motors, double power){
         super(statemachine);
         carouselMotor = motors.get(5);
         carouselPower = power;
-        movement = direction;
         Time = time;
         mRuntime.reset();
     }

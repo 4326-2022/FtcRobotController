@@ -86,6 +86,7 @@ public class DriveState extends State {
                         leftBack.setPower(-driveSpeed);
                         leftFront.setPower(-driveSpeed);
                         rightBack.setPower(driveSpeed);
+                        rightFront.setPower(driveSpeed);
                     } else if (Movement.equals("turnRight")) {
                         leftBack.setPower(driveSpeed);
                         leftFront.setPower(driveSpeed);

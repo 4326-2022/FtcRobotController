@@ -1,0 +1,389 @@
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ExtendPulleyState.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.firstinspires.ftc.teamcode.statemachine;\r\n\r\nimport com.qualcomm.robotcore.hardware.DcMotor;\r\nimport com.qualcomm.robotcore.eventloop.opmode.Autonomous;\r\nimport com.qualcomm.robotcore.eventloop.opmode.Disabled;\r\nimport com.qualcomm.robotcore.eventloop.opmode.OpMode;\r\nimport com.qualcomm.robotcore.eventloop.opmode.TeleOp;\r\nimport com.qualcomm.robotcore.hardware.DcMotor;\r\nimport com.qualcomm.robotcore.hardware.Servo;\r\nimport com.qualcomm.robotcore.util.ElapsedTime;\r\nimport com.qualcomm.robotcore.util.Range;\r\nimport java.util.ArrayList;\r\nimport com.qualcomm.robotcore.util.ElapsedTime;\r\n\r\npublic class ExtendPulleyState extends State {\r\n\r\n    DcMotor pulley;\r\n    Servo leftHand;\r\n    Servo rightHand;\r\n    boolean on = false;\r\n\r\n    private double Power;\r\n    private String Movement;\r\n\r\n    private State NextState;\r\n\r\n    private double Time;\r\n    ElapsedTime mRuntime = new ElapsedTime();\r\n\r\n\r\n    public ExtendPulleyState(StateMachine statemachine, double time, double power, ArrayList<DcMotor> motor, Servo right, Servo left) {\r\n        super(statemachine);\r\n        Time = time;\r\n        pulley = motor.get(4);\r\n        leftHand = left;\r\n        rightHand = right;\r\n        Power = power;\r\n        mRuntime.reset();\r\n\r\n    }\r\n\r\n    public void setNextState(State state) {\r\n        NextState = state;\r\n\r\n    }\r\n\r\n    @Override\r\n    public void start() {\r\n        //  this.update();\r\n        mRuntime.reset();\r\n        pulley.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);\r\n\r\n\r\n\r\n    }\r\n\r\n    @Override\r\n    public void update() {\r\n\r\n\r\n        while (mRuntime.seconds() < Time) {\r\n            pulley.setPower(Power);\r\n\r\n        }\r\n\r\n\r\n        //on = false;\r\n        pulley.setPower(0);\r\n\r\n        this.stop();\r\n    }\r\n\r\n    @Override\r\n    void stop() {\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    void initialize() {\r\n\r\n    }\r\n\r\n    public boolean getOn(){\r\n        return on;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ExtendPulleyState.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ExtendPulleyState.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ExtendPulleyState.java	(revision 4c6ddd9b8a8dfb727890ed585c0da4d20428de0e)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ExtendPulleyState.java	(date 1643665788157)
+@@ -28,14 +28,15 @@
+     ElapsedTime mRuntime = new ElapsedTime();
+ 
+ 
+-    public ExtendPulleyState(StateMachine statemachine, double time, double power, ArrayList<DcMotor> motor, Servo right, Servo left) {
++    public ExtendPulleyState(StateMachine statemachine, double time, double power, ArrayList<DcMotor> motor, Servo arm, Servo clamp, String direction) {
+         super(statemachine);
+         Time = time;
+         pulley = motor.get(4);
+-        leftHand = left;
+-        rightHand = right;
++        leftHand = arm;
++        rightHand = clamp;
+         Power = power;
+         mRuntime.reset();
++        Movement = direction;
+ 
+     }
+ 
+@@ -59,7 +60,11 @@
+ 
+ 
+         while (mRuntime.seconds() < Time) {
+-            pulley.setPower(Power);
++            if (Movement == "extend") {
++                pulley.setPower(Power);
++            } else {
++                pulley.setPower(-Power);
++            }
+ 
+         }
+ 
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ClaspState.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.firstinspires.ftc.teamcode.statemachine;\r\n\r\nimport com.qualcomm.robotcore.hardware.DcMotor;\r\nimport com.qualcomm.robotcore.hardware.Servo;\r\nimport com.qualcomm.robotcore.util.ElapsedTime;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class ClaspState extends State {\r\n\r\n    Servo arm;\r\n    State NextState;\r\n    ElapsedTime mRuntime = new ElapsedTime();\r\n    Double time;\r\n    double Power;\r\n    String Movement;\r\n    double pos;\r\n    // private StateMachine.State NextState;\r\n    public ClaspState(StateMachine statemachine, Servo clasp, double sec, double position){\r\n        super(statemachine);\r\n        arm = clasp;\r\n        time = sec;\r\n        mRuntime.reset();\r\n\r\n        pos = position;\r\n    }\r\n    @Override\r\n    public void start() {\r\n        mRuntime.reset();\r\n\r\n    }\r\n\r\n    @Override\r\n    public void update() {\r\n\r\n//        if(arm.getPosition() == 0)\r\n//            arm.setPosition(1);\r\n//        else\r\n        while (mRuntime.seconds()<=time) {\r\n            arm.setPosition(pos);\r\n\r\n        }\r\n        //(1000);\r\n        this.stop();\r\n\r\n\r\n\r\n    }\r\n\r\n    @Override\r\n    void stop() {\r\n\r\n    }\r\n\r\n    @Override\r\n    void initialize() {\r\n\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ClaspState.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ClaspState.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ClaspState.java	(revision 4c6ddd9b8a8dfb727890ed585c0da4d20428de0e)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/ClaspState.java	(date 1643665290699)
+@@ -9,7 +9,6 @@
+ public class ClaspState extends State {
+ 
+     Servo arm;
+-    State NextState;
+     ElapsedTime mRuntime = new ElapsedTime();
+     Double time;
+     double Power;
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TestMachine.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TestMachine.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TestMachine.java
+new file mode 100644
+--- /dev/null	(date 1643835001616)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TestMachine.java	(date 1643835001616)
+@@ -0,0 +1,181 @@
++/* Copyright (c) 2017 FIRST. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without modification,
++ * are permitted (subject to the limitations in the disclaimer below) provided that
++ * the following conditions are met:
++ *
++ * Redistributions of source code must retain the above copyright notice, this list
++ * of conditions and the following disclaimer.
++ *
++ * Redistributions in binary form must reproduce the above copyright notice, this
++ * list of conditions and the following disclaimer in the documentation and/or
++ * other materials provided with the distribution.
++ *
++ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
++ * promote products derived from this software without specific prior written permission.
++ *
++ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
++ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
++ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
++
++package org.firstinspires.ftc.teamcode;
++
++import com.qualcomm.hardware.bosch.BNO055IMU;
++import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
++import com.qualcomm.robotcore.eventloop.opmode.Disabled;
++import com.qualcomm.robotcore.eventloop.opmode.OpMode;
++import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
++import com.qualcomm.robotcore.hardware.DcMotor;
++import com.qualcomm.robotcore.hardware.DcMotorSimple;
++import com.qualcomm.robotcore.hardware.Servo;
++import com.qualcomm.robotcore.util.ElapsedTime;
++import com.qualcomm.robotcore.util.Range;
++
++import org.firstinspires.ftc.teamcode.components.Component;
++import org.firstinspires.ftc.teamcode.components.ComponentHelper;
++import org.firstinspires.ftc.teamcode.statemachine.CCWTurnByPID;
++import org.firstinspires.ftc.teamcode.statemachine.CWTurnByPID;
++import org.firstinspires.ftc.teamcode.statemachine.ClaspState;
++import org.firstinspires.ftc.teamcode.statemachine.DetermineDuckState;
++import org.firstinspires.ftc.teamcode.statemachine.DriveState;
++import org.firstinspires.ftc.teamcode.statemachine.ExtendPulleyState;
++import org.firstinspires.ftc.teamcode.statemachine.State;
++import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
++import org.firstinspires.ftc.teamcode.statemachine.WaitState;
++import org.firstinspires.ftc.teamcode.vision.DuckDetector;
++
++import java.util.ArrayList;
++
++@Autonomous(name="Test Auton #2")
++public class TestMachine extends OpMode {
++    // Declare OpMode members.
++    private CommonVariables commonVariables;
++
++    private ElapsedTime elapsedTime = new ElapsedTime();
++
++    private StateMachine stateMachine;
++    private Component[] opModeComponents;
++
++    DcMotor leftFront;
++    DcMotor rightFront;
++    DcMotor leftBack;
++    DcMotor rightBack;
++
++    BNO055IMU imu;
++
++    Servo arm;
++    Servo clamp;
++
++    /*
++     * Code to run ONCE when the driver hits INIT
++     */
++    @Override
++    public void init() {
++        rightFront = hardwareMap.dcMotor.get("right_front");
++        leftFront = hardwareMap.dcMotor.get("left_front");
++        rightBack = hardwareMap.dcMotor.get("right_back");
++        leftBack = hardwareMap.dcMotor.get("left_back");
++
++        arm = hardwareMap.servo.get("arm");
++        clamp = hardwareMap.servo.get("clamp");
++
++        ArrayList<DcMotor> motors = new ArrayList<DcMotor>();
++        motors.add(rightFront);
++        motors.add(leftFront);
++        motors.add(rightBack);
++        motors.add(leftBack);
++
++        leftFront.setDirection(DcMotorSimple.Direction.REVERSE); //leftFront
++        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
++
++        telemetry.addData("Status", "Initialized");
++
++        this.commonVariables = new CommonVariables(
++                this,
++                this.telemetry,
++                this.hardwareMap,
++                this.elapsedTime
++        );
++
++        this.stateMachine = new StateMachine(this.commonVariables);
++
++        State[] states = {
++                new DetermineDuckState(stateMachine),
++                new DriveState(stateMachine, motors, 5, "forward", 10),
++                new CCWTurnByPID(stateMachine, 90, 5, motors, imu),
++                new DriveState(stateMachine, motors, 5, "forward", 10),
++                new CWTurnByPID(stateMachine, 90, 5, motors, imu),
++                new DriveState(stateMachine, motors, 5, "forward", 10),
++                new ExtendPulleyState(stateMachine, 5, 5, motors, arm, clamp, "extend"),
++                new ClaspState(stateMachine, arm, 2, 1),
++                new ClaspState(stateMachine, clamp, 2, 0),
++                new ClaspState(stateMachine, arm, 2, 0),
++                new ClaspState(stateMachine, clamp, 2, 1),
++                new ExtendPulleyState(stateMachine, 5, 5, motors, arm, clamp, "contract"),
++                new WaitState(5, "End State 1", stateMachine),
++                new WaitState(5, "End State 2", stateMachine),
++        };
++
++        this.stateMachine.feed(states);
++
++        Component[] components = {
++                ComponentHelper.getComponent(DuckDetector.class, commonVariables)
++        };
++        this.opModeComponents = components;
++
++        for (Component component : components) {
++            component.initialize();
++        }
++
++        // Tell the driver that initialization is complete.
++        telemetry.addData("Status", "Initialized");
++    }
++
++    /*
++     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
++     */
++    @Override
++    public void init_loop() {
++    }
++
++    /*
++     * Code to run ONCE when the driver hits PLAY
++     */
++    @Override
++    public void start() {
++        elapsedTime.reset();
++        // START MANAGER
++        this.stateMachine.start();
++    }
++
++    /*
++     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
++     */
++    @Override
++    public void loop() {
++        this.stateMachine.update();
++        this.telemetry.addData("Position:", ComponentHelper.getComponent(DuckDetector.class, commonVariables).getPosition());
++    }
++
++    /*
++     * Code to run ONCE after the driver hits STOP
++     */
++    @Override
++    public void stop() {
++        this.stateMachine.stop();
++        this.stateMachine = null;
++
++        for (Component component : this.opModeComponents) {
++            component.stop();
++        }
++    }
++}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/DriveState.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/DriveState.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/DriveState.java
+new file mode 100644
+--- /dev/null	(date 1643666024397)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/statemachine/DriveState.java	(date 1643666024397)
+@@ -0,0 +1,127 @@
++package org.firstinspires.ftc.teamcode.statemachine;
++import com.qualcomm.robotcore.hardware.DcMotor;
++import java.util.ArrayList;
++
++public class DriveState extends State {
++
++    int newLeftBackTarget;
++    int newRightBackTarget;
++    int newLeftFrontTarget;
++    int newRightFrontTarget;
++    double distance;
++
++
++    DcMotor leftBack;
++    DcMotor rightBack;
++    DcMotor leftFront;
++    DcMotor rightFront;
++
++    static final double COUNTS_PER_MOTOR_REV = 1120;    // eg: AndyMark Motor Encoder
++    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
++    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
++    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
++            (WHEEL_DIAMETER_INCHES * 3.1415);
++    static double driveSpeed = 0.6;
++    static final double TURN_SPEED = 0.5;
++    private String Movement;
++
++    /**
++     * This is the default State constructor.
++     *
++     * @param stateMachine The statemachine sequence to which the state belongs.
++     * @param stateMachine The stateMachine sequence to which the state belongs.
++     */
++    public DriveState(StateMachine stateMachine, ArrayList<DcMotor> motor, double speed, String direction, double target) {
++        super(stateMachine);
++        driveSpeed = speed;
++        distance = target;
++        leftFront = motor.get(0);
++        rightFront = motor.get(1);
++        leftBack = motor.get(2);
++        rightBack = motor.get(3);
++        Movement = direction;
++    }
++
++
++    @Override
++    void start() {
++        //Reset the encoders back to zero for the next movement
++        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
++        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
++        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
++        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
++        //Bring them back to using encoders
++        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
++        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
++        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
++        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
++
++        newLeftBackTarget = leftBack.getCurrentPosition() + (int) (distance * COUNTS_PER_INCH);
++        newRightBackTarget = rightBack.getCurrentPosition() + (int) (distance * COUNTS_PER_INCH);
++        newLeftFrontTarget = leftFront.getCurrentPosition() + (int) (distance * COUNTS_PER_INCH);
++        newRightFrontTarget = rightFront.getCurrentPosition() + (int) (distance * COUNTS_PER_INCH);
++
++    }
++
++        @Override
++        void update() {
++                if ((!(Movement.equals("backward"))) && (newLeftBackTarget > leftBack.getCurrentPosition() && newRightBackTarget > rightBack.getCurrentPosition() && newLeftFrontTarget > leftFront.getCurrentPosition() && newRightFrontTarget > rightFront.getCurrentPosition())) {
++
++                    if (Movement.equals("left")) {
++                        leftBack.setPower(driveSpeed);
++                        leftFront.setPower(-driveSpeed);
++                        rightBack.setPower(-driveSpeed);
++                        rightFront.setPower(driveSpeed);
++                    } else if (Movement.equals("right")) {
++                        leftBack.setPower(-driveSpeed);
++                        leftFront.setPower(driveSpeed);
++                        rightBack.setPower(driveSpeed);
++                        rightFront.setPower(-driveSpeed);
++                    } else if (Movement.equals("backward")) {
++                        leftBack.setPower(-driveSpeed);
++                        leftFront.setPower(-driveSpeed);
++                        rightBack.setPower(-driveSpeed);
++                        rightFront.setPower(-driveSpeed);
++                    } else if (Movement.equals("turnLeft")) {
++                        leftBack.setPower(-driveSpeed);
++                        leftFront.setPower(-driveSpeed);
++                        rightBack.setPower(driveSpeed);
++                    } else if (Movement.equals("turnRight")) {
++                        leftBack.setPower(driveSpeed);
++                        leftFront.setPower(driveSpeed);
++                        rightBack.setPower(-driveSpeed);
++                        rightFront.setPower(-driveSpeed);
++                    } else {
++                        leftBack.setPower(driveSpeed);
++                        leftFront.setPower(driveSpeed);
++                        rightBack.setPower(driveSpeed);
++                        rightFront.setPower(driveSpeed);
++                    }
++
++                } else if (Movement.equals("backward") && (newLeftBackTarget < leftBack.getCurrentPosition() && newRightBackTarget < rightBack.getCurrentPosition() && newLeftFrontTarget < leftFront.getCurrentPosition() && newRightFrontTarget < rightFront.getCurrentPosition())) {
++                    leftBack.setPower(-driveSpeed);
++                    leftFront.setPower(-driveSpeed);
++                    rightBack.setPower(-driveSpeed);
++                    rightFront.setPower(-driveSpeed);
++
++
++                } else {
++                    this.startNextState();
++
++                }
++            }
++
++
++            @Override
++            void stop() {
++                rightFront.setPower(0);
++                leftFront.setPower(0);
++                rightBack.setPower(0);
++                leftBack.setPower(0);
++
++            }
++
++            @Override
++            void initialize() {
++            }
++        }
+\ No newline at end of file
