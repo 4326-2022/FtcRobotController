@@ -44,6 +44,8 @@ public class ExtendRail extends State {
             this.telemetry.addData("Here?", true);
             this.armServo.setPosition(0);
             this.startTimeOut(1);
+            this.stop();
+            this.startNextState();
         }
     }
 

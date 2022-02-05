@@ -40,6 +40,9 @@ public class DriveState extends State {
         leftBack = motor.get(2);
         rightBack = motor.get(3);
         Movement = direction;
+        if (Movement == "turnRight" || Movement == "turnLeft") {
+            distance = distance * 24/90;
+        }
     }
 
 
@@ -82,12 +85,12 @@ public class DriveState extends State {
                         leftFront.setPower(-driveSpeed);
                         rightBack.setPower(-driveSpeed);
                         rightFront.setPower(-driveSpeed);
-                    } else if (Movement.equals("turnLeft")) {
+                    } else if (Movement.equals("turnRight")) {
                         leftBack.setPower(-driveSpeed);
                         leftFront.setPower(-driveSpeed);
                         rightBack.setPower(driveSpeed);
                         rightFront.setPower(driveSpeed);
-                    } else if (Movement.equals("turnRight")) {
+                    } else if (Movement.equals("turnLeft")) {
                         leftBack.setPower(driveSpeed);
                         leftFront.setPower(driveSpeed);
                         rightBack.setPower(-driveSpeed);

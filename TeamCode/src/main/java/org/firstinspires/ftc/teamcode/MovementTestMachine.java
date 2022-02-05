@@ -42,8 +42,8 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.components.Component;
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
 import org.firstinspires.ftc.teamcode.statemachine.CCWTurnByPID;
-import org.firstinspires.ftc.teamcode.statemachine.DetermineDuckState;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
+import org.firstinspires.ftc.teamcode.statemachine.ExtendRail;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 import org.firstinspires.ftc.teamcode.statemachine.TurnCarouselState;
@@ -109,8 +109,12 @@ public class MovementTestMachine extends OpMode {
         this.stateMachine = new StateMachine(this.commonVariables);
 
         State[] states = {
-                new DriveState(stateMachine, motors, 0.6, "forward", 5),
-                new CCWTurnByPID(stateMachine, 90, .5, motors, imu)
+                // new DriveState(stateMachine, motors, 0.6, "forward", 10),
+                // new ExtendRail(stateMachine, 5),
+                new DriveState(stateMachine, motors, 2, "forward", 30),
+                // new DriveState(stateMachine, motors, 0.5, "turnLeft", 90)
+
+                // new CCWTurnByPID(stateMachine, 50, .5, motors, imu)
         };
 
         this.stateMachine.feed(states);

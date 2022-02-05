@@ -1,25 +1,33 @@
 package org.firstinspires.ftc.teamcode.statemachine;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
 import org.firstinspires.ftc.teamcode.vision.DuckDetectionPipline;
 import org.firstinspires.ftc.teamcode.vision.DuckDetector;
 
-public class DetermineDuckState extends State {
+import java.util.ArrayList;
+
+public class DetermineDuckStateLeft extends State {
 
     private DuckDetector duckDetector;
 
     private int position;
     private int measurements;
     private double lastMeasurement;
+    private ArrayList<DcMotor> motors;
+    private BNO055IMU imu;
 
     /**
      * This is the default State constructor.
      *
      * @param stateMachine The statemachine sequence to which the state belongs.
      */
-    public DetermineDuckState(StateMachine stateMachine) {
+    public DetermineDuckStateLeft(StateMachine stateMachine, ArrayList<DcMotor> motors, BNO055IMU imu) {
         super(stateMachine);
-
+        this.motors = motors;
+        this.imu = imu;
         this.duckDetector = ComponentHelper.getComponent(DuckDetector.class, this.commonVariables);
     }
 
@@ -34,18 +42,39 @@ public class DetermineDuckState extends State {
 
         if (position == DuckDetectionPipline.DuckPosition.LEFT) {
             nextStates = new State[]{
-                    new WaitState(5, "State Left 1", this.stateMachine),
-                    new WaitState(5, "State Left 2", this.stateMachine),
+                    // get to shipping hub
+                    new DriveState(stateMachine, this.motors, 5, "forward", 9),
+                    new DriveState(stateMachine, this.motors, 0.5, "turnRight", 90),
+                    new DriveState(stateMachine, motors, 5, "forward", 23),
+                    new DriveState(stateMachine, motors, 0.5,"turnLeft", 90),
+                    new DriveState(stateMachine, motors, 5, "forward", 5),
+
+                    // drop off duck
+                    new ExtendRail(stateMachine, 2),
             };
         } else if (position == DuckDetectionPipline.DuckPosition.CENTER) {
             nextStates = new State[]{
-                    new WaitState(5, "State Center 1", this.stateMachine),
-                    new WaitState(5, "State Center 2", this.stateMachine),
+                    // get to shipping hub
+                    new DriveState(stateMachine, this.motors, 5, "forward", 9),
+                    new DriveState(stateMachine, this.motors, 0.5, "turnRight", 90),
+                    new DriveState(stateMachine, motors, 5, "forward", 23),
+                    new DriveState(stateMachine, motors, 0.5,"turnLeft", 90),
+                    new DriveState(stateMachine, motors, 5, "forward", 5),
+
+                    // drop off duck
+                    new ExtendRail(stateMachine, 9),
             };
         } else  {
             nextStates = new State[]{
-                    new WaitState(5, "State Right 1", this.stateMachine),
-                    new WaitState(5, "State Right 2", this.stateMachine),
+                    // get to shipping hub
+                    new DriveState(stateMachine, this.motors, 5, "forward", 9),
+                    new DriveState(stateMachine, this.motors, 0.5, "turnRight", 90),
+                    new DriveState(stateMachine, motors, 5, "forward", 23),
+                    new DriveState(stateMachine, motors, 0.5,"turnLeft", 90),
+                    new DriveState(stateMachine, motors, 5, "forward", 5),
+
+                    // drop off duck
+                    new ExtendRail(stateMachine, 15),
             };
         }
 

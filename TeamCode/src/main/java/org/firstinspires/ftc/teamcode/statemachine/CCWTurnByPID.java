@@ -141,10 +141,12 @@ public class CCWTurnByPID extends State {
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
-        if (deltaAngle < -180)
+        if (deltaAngle < -180) {
             deltaAngle += 360;
-        else if (deltaAngle > 180)
+        }
+        else if (deltaAngle > 180) {
             deltaAngle -= 360;
+        }
 
         globalAngle += deltaAngle;
 
@@ -155,8 +157,9 @@ public class CCWTurnByPID extends State {
         }else if(clockwise == true){
             return globalAngle*-1 *(-1);
         }
-        else //if(!clockwise ==)
+        else {
             return globalAngle;
+        }
     }
 
     /**
@@ -194,15 +197,6 @@ public class CCWTurnByPID extends State {
         do
         {
             power = pidRotate.performPID(getAngle()); // power will be + on left turn.
-//                if(!clockwise) {
-//                    leftFront.setPower(-power);
-//                    leftBack.setPower(-power);
-//                    rightFront.setPower(power);
-//                    rightBack.setPower(power);
-//                }else {
-
-
-            //Reverse reverse!
             if(target < 0) {
                 leftFront.setPower((-1)*power);
                 leftBack.setPower((-1)*power);
@@ -210,10 +204,7 @@ public class CCWTurnByPID extends State {
                 rightBack.setPower((-1)*-power);
             }
             else {
-                leftFront.setPower((-1)*-power);
-                leftBack.setPower((-1)*-power);
-                rightFront.setPower((-1)*power);
-                rightBack.setPower((-1)*power);
+                break;
             }
         } while (!pidRotate.onTarget());
 

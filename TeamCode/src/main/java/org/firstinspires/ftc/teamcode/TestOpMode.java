@@ -39,7 +39,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.components.Component;
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
-import org.firstinspires.ftc.teamcode.statemachine.DetermineDuckState;
 import org.firstinspires.ftc.teamcode.statemachine.DropState;
 import org.firstinspires.ftc.teamcode.statemachine.ExtendRail;
 import org.firstinspires.ftc.teamcode.statemachine.State;
@@ -76,7 +75,7 @@ public class TestOpMode extends OpMode {
 
         State[] states = {
                 new ExtendRail(stateMachine, 10),
-                new DetermineDuckState(stateMachine),
+                //new DetermineDuckState(stateMachine, motors, imu),
                 new WaitState(5, "End State 1", stateMachine),
                 new WaitState(5, "End State 2", stateMachine),
         };
