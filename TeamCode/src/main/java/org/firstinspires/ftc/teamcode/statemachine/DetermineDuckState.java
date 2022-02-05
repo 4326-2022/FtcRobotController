@@ -30,26 +30,21 @@ public class DetermineDuckState extends State {
     }
 
     void setUpNext(DuckDetectionPipline.DuckPosition position) {
-        State[] nextStates;
+        int inchTarget;
 
         if (position == DuckDetectionPipline.DuckPosition.LEFT) {
-            nextStates = new State[]{
-                    new WaitState(5, "State Left 1", this.stateMachine),
-                    new WaitState(5, "State Left 2", this.stateMachine),
-            };
+            inchTarget = 1;
         } else if (position == DuckDetectionPipline.DuckPosition.CENTER) {
-            nextStates = new State[]{
-                    new WaitState(5, "State Center 1", this.stateMachine),
-                    new WaitState(5, "State Center 2", this.stateMachine),
-            };
+            inchTarget = 5;
         } else  {
-            nextStates = new State[]{
-                    new WaitState(5, "State Right 1", this.stateMachine),
-                    new WaitState(5, "State Right 2", this.stateMachine),
-            };
+            inchTarget = 10;
         }
 
-        this.insert(nextStates);
+        State checkingState = this.getNextState();
+        while (!(checkingState instanceof ExtendRail)) {
+            checkingState = checkingState.getNextState();
+        }
+        ((ExtendRail) checkingState).changeTarget(inchTarget, false);
     }
 
     @Override

@@ -75,10 +75,12 @@ public class TestOpMode extends OpMode {
         this.stateMachine = new StateMachine(this.commonVariables);
 
         State[] states = {
-                new ExtendRail(stateMachine, 10),
                 new DetermineDuckState(stateMachine),
-                new WaitState(5, "End State 1", stateMachine),
-                new WaitState(5, "End State 2", stateMachine),
+                // DRIVE STATES
+                new ExtendRail(stateMachine, 5),
+                // DRIVE STATES
+                // CAROUSEL STATES
+                // PARKING STATES
         };
 
         this.stateMachine.feed(states);
