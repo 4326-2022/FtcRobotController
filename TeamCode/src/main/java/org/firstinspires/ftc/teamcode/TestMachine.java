@@ -48,6 +48,7 @@ import org.firstinspires.ftc.teamcode.statemachine.ClaspState;
 import org.firstinspires.ftc.teamcode.statemachine.DetermineDuckStateLeft;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
 import org.firstinspires.ftc.teamcode.statemachine.ExtendPulleyState;
+import org.firstinspires.ftc.teamcode.statemachine.ExtendRail;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 import org.firstinspires.ftc.teamcode.statemachine.TurnCarouselState;
@@ -90,6 +91,7 @@ public class TestMachine extends OpMode {
         xrail = hardwareMap.dcMotor.get("xr");
         spinny = hardwareMap.dcMotor.get("cm");
 
+
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
 
@@ -118,8 +120,18 @@ public class TestMachine extends OpMode {
 
         State[] states = {
                 // see what position the duck is in
-                new DetermineDuckStateLeft(stateMachine, motors, imu),
+                new DetermineDuckStateLeft(stateMachine),
 
+                // get to shipping hub
+                new DriveState(stateMachine, motors, 5, "forward", 9),
+                new DriveState(stateMachine, motors, 0.5, "turnRight", 90),
+                new DriveState(stateMachine, motors, 5, "forward", 23),
+                new DriveState(stateMachine, motors, 0.5,"turnLeft", 90),
+                new DriveState(stateMachine, motors, 5, "forward", 2),
+
+                // drop off duck
+                new ExtendRail(stateMachine, 5),
+                new WaitState(1, "Wait 1", stateMachine),
 
 
                 // move to carousel

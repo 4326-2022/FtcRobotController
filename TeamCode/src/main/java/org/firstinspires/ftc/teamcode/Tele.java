@@ -177,10 +177,8 @@ public class Tele extends OpMode {
         }
 
         if (this.gamepad1.a) {
-            this.clampTarget = .5;
+            this.clampTarget = 1;
         } else if (this.gamepad1.b) {
-            this.clampTarget = -.5;
-        } else {
             this.clampTarget = 0;
         }
 

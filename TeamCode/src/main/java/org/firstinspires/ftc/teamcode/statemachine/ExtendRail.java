@@ -11,6 +11,7 @@ public class ExtendRail extends State {
     private int inches;
     private int targetTicks;
     private DcMotor railMotor;
+    private Servo swinggy;
     private Servo armServo;
 
     /**
@@ -25,13 +26,10 @@ public class ExtendRail extends State {
         this.targetTicks = TickService.inchesToTicks(this.inches);
     }
 
-    void changeTarget(int newInches, boolean running) {
+    void changeTarget(int newInches) {
         this.inches = newInches;
         this.targetTicks = TickService.inchesToTicks(this.inches);
 
-        if (running) {
-            this.railMotor.setTargetPosition(this.targetTicks);
-        }
     }
 
     @Override
@@ -48,18 +46,15 @@ public class ExtendRail extends State {
         if (this.railMotor.getCurrentPosition() < this.railMotor.getTargetPosition()) {
             this.railMotor.setPower(this.power);
         }
-
-        if (this.railMotor.getCurrentPosition() >= this.railMotor.getTargetPosition()) {
-            this.armServo.setPosition(0);
-            this.startTimeOut(1);
-            this.stop();
+    else {
+            this.armServo.setPosition(1);
             this.startNextState();
         }
     }
 
     @Override
     void stop() {
-        this.armServo.setPosition(1);
+        this.armServo.setPosition(0);
         this.railMotor.setPower(0);
     }
 

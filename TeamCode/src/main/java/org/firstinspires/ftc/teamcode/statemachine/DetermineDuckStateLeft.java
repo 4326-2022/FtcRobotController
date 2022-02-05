@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.components.ComponentHelper;
 import org.firstinspires.ftc.teamcode.vision.DuckDetectionPipline;
 import org.firstinspires.ftc.teamcode.vision.DuckDetector;
 
-public class DetermineDuckState extends State {
+public class DetermineDuckStateLeft extends State {
 
     private DuckDetector duckDetector;
 
@@ -17,7 +17,7 @@ public class DetermineDuckState extends State {
      *
      * @param stateMachine The statemachine sequence to which the state belongs.
      */
-    public DetermineDuckState(StateMachine stateMachine) {
+    public DetermineDuckStateLeft(StateMachine stateMachine) {
         super(stateMachine);
 
         this.duckDetector = ComponentHelper.getComponent(DuckDetector.class, this.commonVariables);
@@ -33,18 +33,18 @@ public class DetermineDuckState extends State {
         int inchTarget;
 
         if (position == DuckDetectionPipline.DuckPosition.LEFT) {
-            inchTarget = 1;
-        } else if (position == DuckDetectionPipline.DuckPosition.CENTER) {
             inchTarget = 5;
+        } else if (position == DuckDetectionPipline.DuckPosition.CENTER) {
+            inchTarget = 9;
         } else  {
-            inchTarget = 10;
+            inchTarget = 15;
         }
 
         State checkingState = this.getNextState();
         while (!(checkingState instanceof ExtendRail)) {
             checkingState = checkingState.getNextState();
         }
-        ((ExtendRail) checkingState).changeTarget(inchTarget, false);
+        ((ExtendRail) checkingState).changeTarget(inchTarget);
     }
 
     @Override
