@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.statemachine;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class DropState extends State {
 
     private Servo armServo;
+    private Servo swingman;
+    private DcMotor railMotor;
     private final int waitTime = 3;
 
     /**
@@ -18,22 +21,28 @@ public class DropState extends State {
 
     @Override
     void start() {
-        this.armServo.setPosition(0);
-        this.startTimeOut(this.waitTime);
+
     }
 
     @Override
     void update() {
-
+        if (!(elapsedTime.seconds() < 4)) {
+            startNextState();
+        } else {
+            this.swingman.setPosition(1);
+            this.armServo.setPosition(0);
+        }
     }
 
     @Override
     void stop() {
-        this.armServo.setPosition(1);
+        this.railMotor.setPower(0);
     }
 
     @Override
     void initialize() {
         this.armServo = this.hardwareMap.get(Servo.class, "cs");
+        this.swingman = this.hardwareMap.get(Servo.class, "ts");
+        this.railMotor = this.hardwareMap.get(DcMotor.class, "xr");
     }
 }

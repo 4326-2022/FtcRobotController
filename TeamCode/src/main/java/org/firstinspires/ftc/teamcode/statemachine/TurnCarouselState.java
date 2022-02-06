@@ -47,7 +47,7 @@ public class TurnCarouselState extends State{
         on = false;
         carouselMotor.setPower(0);
 
-        this.stop();
+        startNextState();
     }
 
     @Override

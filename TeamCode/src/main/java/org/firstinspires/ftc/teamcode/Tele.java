@@ -140,14 +140,18 @@ public class Tele extends OpMode {
     public void loop() {
         // DRIVING
         double drive = gamepad1.left_stick_y;
+
         double turn = gamepad1.right_stick_x;
 
+
         double[] powers = {
+
                 drive - turn,
                 drive + turn,
                 drive - turn,
                 drive + turn
         };
+
 
         for (int i = 0; i < this.motors.length; i++) {
             this.motors[i].setPower(powers[i]);
@@ -169,21 +173,23 @@ public class Tele extends OpMode {
         // SERVO
 
         if (this.gamepad1.left_bumper) {
-            this.turnTarget -= .001;
+            this.turnTarget -= .01;
         }
 
         if (this.gamepad1.right_bumper) {
-            this.turnTarget += .001;
+            this.turnTarget += .01;
         }
 
+
         if (this.gamepad1.a) {
-            this.clampTarget = 1;
+            this.clampTarget += 0.1;
         } else if (this.gamepad1.b) {
-            this.clampTarget = 0;
+            this.clampTarget -= 0.1;
         }
 
         this.clampServo.setPosition(this.clampTarget);
         this.turnServo.setPosition(this.turnTarget);
+
 
         // DATA
         telemetry.addData("Status", "Run Time: " + runtime.toString());

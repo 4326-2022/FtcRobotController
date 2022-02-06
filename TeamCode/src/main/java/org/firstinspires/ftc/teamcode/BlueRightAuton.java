@@ -31,34 +31,26 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.components.Component;
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
-import org.firstinspires.ftc.teamcode.statemachine.CCWTurnByPID;
-import org.firstinspires.ftc.teamcode.statemachine.CWTurnByPID;
-import org.firstinspires.ftc.teamcode.statemachine.ClaspState;
 import org.firstinspires.ftc.teamcode.statemachine.DetermineDuckStateLeft;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
-import org.firstinspires.ftc.teamcode.statemachine.ExtendPulleyState;
 import org.firstinspires.ftc.teamcode.statemachine.ExtendRail;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 import org.firstinspires.ftc.teamcode.statemachine.TurnCarouselState;
-import org.firstinspires.ftc.teamcode.statemachine.WaitState;
 import org.firstinspires.ftc.teamcode.vision.DuckDetector;
 
 import java.util.ArrayList;
 
-@Autonomous(name="Test Auton #2")
-public class TestMachine extends OpMode {
+@Autonomous(name="Blue Right Autonomous")
+public class BlueRightAuton extends OpMode {
     // Declare OpMode members.
     private CommonVariables commonVariables;
 
@@ -119,35 +111,43 @@ public class TestMachine extends OpMode {
         this.stateMachine = new StateMachine(this.commonVariables);
 
         State[] states = {
+
                 // see what position the duck is in
                 new DetermineDuckStateLeft(stateMachine),
 
                 // get to shipping hub
                 new DriveState(stateMachine, motors, 5, "forward", 9),
+                new DriveState(stateMachine, motors, 0.5, "turnLeft", 90),
+                new DriveState(stateMachine, motors, 5, "forward", 10),
                 new DriveState(stateMachine, motors, 0.5, "turnRight", 90),
-                new DriveState(stateMachine, motors, 5, "forward", 23),
-                new DriveState(stateMachine, motors, 0.5,"turnLeft", 90),
-                new DriveState(stateMachine, motors, 5, "forward", 2),
+                new DriveState(stateMachine, motors, 5, "forward", 10),
+
+
 
                 // drop off duck
-                new ExtendRail(stateMachine, 5),
-                new WaitState(1, "Wait 1", stateMachine),
+                new ExtendRail(stateMachine, 15),
+
 
 
                 // move to carousel
-                /* new DriveState(stateMachine, motors, 5, "backward", 20),
-                new CCWTurnByPID(stateMachine, 90, 5, motors, imu),
-                new DriveState(stateMachine, motors, 5, "forward", 20),
+                new DriveState(stateMachine, motors, 0.5, "turnRight", 180),
+                new DriveState(stateMachine, motors, 5, "forward", 15),
+                new DriveState(stateMachine, motors, 0.5, "turnLeft", 90),
+                new DriveState(stateMachine, motors, 5, "forward", 15),
+
 
                 //deliver duck
                 new TurnCarouselState(stateMachine, 5, motors, 5),
 
                 //park
-                new CCWTurnByPID(stateMachine, 90, 5, motors, imu),
-                new DriveState(stateMachine ,motors, 5, "forward", 10),
+                new DriveState(stateMachine, motors, 0.5, "turnLeft", 90),
+                new DriveState(stateMachine, motors, 5, "forward", 15)
 
-                new WaitState(5, "End State 1", stateMachine),
-                new WaitState(5, "End State 2", stateMachine),*/
+
+
+
+
+
         };
 
         this.stateMachine.feed(states);
@@ -202,5 +202,6 @@ public class TestMachine extends OpMode {
         for (Component component : this.opModeComponents) {
             component.stop();
         }
+
     }
 }

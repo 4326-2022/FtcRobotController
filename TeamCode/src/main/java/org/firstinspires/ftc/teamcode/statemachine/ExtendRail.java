@@ -43,24 +43,31 @@ public class ExtendRail extends State {
 
     @Override
     void update() {
-        if (this.railMotor.getCurrentPosition() < this.railMotor.getTargetPosition()) {
+        if (this.railMotor.getCurrentPosition() < this.railMotor.getTargetPosition() && elapsedTime.seconds() < 3) {
             this.railMotor.setPower(this.power);
+            this.swinggy.setPosition(1);
+            this.armServo.setPosition(0);
         }
-    else {
-            this.armServo.setPosition(1);
+        else {
+
             this.startNextState();
         }
     }
 
     @Override
     void stop() {
-        this.armServo.setPosition(0);
+
         this.railMotor.setPower(0);
+        this.swinggy.setPosition(0.5);
+        this.armServo.setPosition(0.5);
+
+
     }
 
     @Override
     void initialize() {
         this.railMotor = this.hardwareMap.get(DcMotor.class, "xr");
         this.armServo = this.hardwareMap.get(Servo.class, "cs");
+        this.swinggy = this.hardwareMap.get(Servo.class, "ts");
     }
 }

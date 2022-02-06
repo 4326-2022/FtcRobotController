@@ -122,6 +122,7 @@ public class DriveState extends State {
                 leftFront.setPower(0);
                 rightBack.setPower(0);
                 leftBack.setPower(0);
+                this.startTimeOut(1);
 
             }
 
